@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Github, Instagram, Linkedin, Twitter, } from 'lucide-react';
+import { Facebook, Github, Instagram, Linkedin, Twitter, } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -18,18 +18,19 @@ const Footer = () => {
               Join the most exciting hackathon of the year and turn your ideas into reality.
             </p>
             <div className="flex gap-4 pt-2">
-              <a href="#" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="Twitter">
+              <a href="https://www.facebook.com/AtatusApp" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="Facebook">
+                <Facebook size={20} />
+              </a>
+              <a href="https://x.com/atatusapp?fbclid=IwY2xjawI_8QRleHRuA2FlbQIxMAABHSS6ks4X__HgtQNzLdaFR26k85fE2njyV_ArO_TtcUtUis_7Oj_vgfYaGg_aem_LkSrrOGT11Ki1xjaXggy5A" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="twitter">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="Instagram">
+              <a href="https://www.instagram.com/atatusapp?igsh=MWVleHMzcGxqYXZsZA==" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="Instagram">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/atatus/" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="LinkedIn">
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="text-white/70 hover:text-hackathon-accent transition-colors" aria-label="GitHub">
-                <Github size={20} />
-              </a>
+          
             </div>
           </div>
           
