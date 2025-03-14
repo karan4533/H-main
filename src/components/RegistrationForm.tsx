@@ -1,13 +1,14 @@
-
 import { useState } from 'react';
-import { Check, Loader2, User, Mail, Users, Github } from 'lucide-react';
+import { Check, Loader2, User, Mail, Users, Github, Phone } from 'lucide-react';
 import { toast } from 'sonner';
+import axios from 'axios';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     teamName: '',
+    whatsapp: '',
     githubProfile: '',
     repoName: '',
     teammate1: '',
@@ -26,24 +27,38 @@ const RegistrationForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    // Format the data to match API requirements
+    const apiData = {
+      ...formData,
+      githubProfile: formData.githubProfile.split('/').pop() || formData.githubProfile,
+      teammate1Github: formData.teammate1Github.split('/').pop() || formData.teammate1Github,
+      teammate2Github: formData.teammate2Github.split('/').pop() || formData.teammate2Github,
+      teammate3Github: formData.teammate3Github.split('/').pop() || formData.teammate3Github,
+    };
+    
+    try {
+      const response = await axios.post(
+        'https://hono-backend.hackathon25.workers.dev/api/teams/register',
+        apiData
+      );
+      
       setLoading(false);
       setSuccess(true);
       toast.success('Registration successful!', {
-        description: 'We\'ve received your registration. Check your email for confirmation.',
+        description: `Team ID: ${response.data.teamId}`,
       });
       
-      // Reset form and success state after a delay
+      // Reset form after success
       setTimeout(() => {
         setFormData({
           name: '',
           email: '',
           teamName: '',
+          whatsapp: '',
           githubProfile: '',
           repoName: '',
           teammate1: '',
@@ -55,7 +70,15 @@ const RegistrationForm = () => {
         });
         setSuccess(false);
       }, 3000);
-    }, 1500);
+    } catch (error) {
+      setLoading(false);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      } else {
+        toast.error('Registration failed. Please try again.');
+      }
+      console.error('Registration error:', error);
+    }
   };
   
   return (
@@ -197,6 +220,25 @@ const RegistrationForm = () => {
                     onChange={handleChange}
                     className="w-full px-4 py-2 rounded-lg border border-hackathon-light/20 focus:border-hackathon-accent focus:ring-2 focus:ring-hackathon-accent/20 outline-none transition-all"
                     placeholder="https://github.com/username"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="whatsapp" className="text-sm font-medium text-hackathon-dark flex items-center gap-2">
+                    <Phone size={16} />
+                    WhatsApp Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="whatsapp"
+                    name="whatsapp"
+                    required
+                    value={formData.whatsapp}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 rounded-lg border border-hackathon-light/20 focus:border-hackathon-accent focus:ring-2 focus:ring-hackathon-accent/20 outline-none transition-all"
+                    placeholder="919876543210"
+                    pattern="^[0-9]{12}$"
+                    title="Please enter a valid WhatsApp number (12 digits including country code)"
                   />
                 </div>
                 
